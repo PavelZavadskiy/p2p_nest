@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { AdvertsModel } from './adverts.model';
 import { InjectModel } from '@nestjs/sequelize';
-import { AdvertsCreateDto } from './dto/Adverts.dto';
+import { AdvertsCreateDto, AdvertsDto } from './dto/Adverts.dto';
 // import { Op } from 'sequelize';
 
 @Injectable()
@@ -11,58 +11,102 @@ export class AdvertsService {
     private advertsRepository: typeof AdvertsModel,
   ) {}
 
-  async create(dto: AdvertsCreateDto): Promise<AdvertsModel> {
-    return await this.advertsRepository.create({
-      id_user_advert: dto.id_user_advert,
-      advert_type: dto.advert_type,
-      crypto_from: dto.crypto_from,
-      crypto_to: dto.crypto_to,
-      price: dto.price,
-      limit: dto.limit,
-      available: dto.available,
-      payment_method: dto.payment_method,
-      region: dto.region,
+  async create(dto: AdvertsCreateDto): Promise<AdvertsDto> {
+    const result = await this.advertsRepository.create({
+      ...dto,
+      id_payment_methods: dto.id_payment_methods.join('-'),
+      is_active: true,
     });
+    return {
+      ...result.dataValues,
+      id_payment_methods: result.dataValues.id_payment_methods
+        .split('-')
+        .map((item) => Number(item)),
+    };
   }
 
-  async findAll(): Promise<AdvertsModel[]> {
-    return await this.advertsRepository.findAll<AdvertsModel>();
+  async findAll(): Promise<AdvertsDto[]> {
+    const result = await this.advertsRepository.findAll<AdvertsModel>();
+    return result.map((item) => ({
+      ...item.dataValues,
+      id_payment_methods: item.dataValues.id_payment_methods
+        .split('-')
+        .map((item) => Number(item)),
+    }));
   }
 
-  async findById(id: number): Promise<AdvertsModel> {
-    return await this.advertsRepository.findOne<AdvertsModel>({
+  async findById(id: number): Promise<AdvertsDto> {
+    const result = await this.advertsRepository.findOne<AdvertsModel>({
       where: {
         id,
       },
     });
+    return {
+      ...result.dataValues,
+      id_payment_methods: result.dataValues.id_payment_methods
+        .split('-')
+        .map((item) => Number(item)),
+    };
   }
 
-  async findByCryptoFrom(crypto_from: number): Promise<AdvertsModel[]> {
-    return await this.advertsRepository.findAll<AdvertsModel>({
+  async findByCrypto(id_crypto: number): Promise<AdvertsDto[]> {
+    const result = await this.advertsRepository.findAll<AdvertsModel>({
       where: {
-        crypto_from,
+        id_crypto,
       },
     });
+    return result.map((item) => ({
+      ...item.dataValues,
+      id_payment_methods: item.dataValues.id_payment_methods
+        .split('-')
+        .map((item) => Number(item)),
+    }));
   }
 
-  async findByCryptoTo(crypto_to: number): Promise<AdvertsModel[]> {
-    return await this.advertsRepository.findAll<AdvertsModel>({
+  async findByFiat(id_fiat: number): Promise<AdvertsDto[]> {
+    const result = await this.advertsRepository.findAll<AdvertsModel>({
       where: {
-        crypto_to,
+        id_fiat,
       },
     });
+    return result.map((item) => ({
+      ...item.dataValues,
+      id_payment_methods: item.dataValues.id_payment_methods
+        .split('-')
+        .map((item) => Number(item)),
+    }));
   }
 
-  async findByCryptoFromTo(
-    crypto_from: number,
-    crypto_to: number,
-  ): Promise<AdvertsModel[]> {
-    return await this.advertsRepository.findAll<AdvertsModel>({
+  async findByCryptoAndFiat(
+    id_crypto: number,
+    id_fiat: number,
+  ): Promise<AdvertsDto[]> {
+    const result = await this.advertsRepository.findAll<AdvertsModel>({
       where: {
-        crypto_from,
-        crypto_to,
+        id_crypto,
+        id_fiat,
       },
     });
+    return result.map((item) => ({
+      ...item.dataValues,
+      id_payment_methods: item.dataValues.id_payment_methods
+        .split('-')
+        .map((item) => Number(item)),
+    }));
+  }
+
+  async findByOwner(id_owner: number): Promise<AdvertsDto[]> {
+    const result = await this.advertsRepository.findAll<AdvertsModel>({
+      where: {
+        id_owner,
+      },
+    });
+    return result.map((item) => ({
+      ...item.dataValues,
+      id_payment_methods: item.dataValues.id_payment_methods
+        .split('-')
+        .map((item) => Number(item)),
+    }));
   }
 
   async remove(id: number): Promise<number> {

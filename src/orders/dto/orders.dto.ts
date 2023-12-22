@@ -8,13 +8,17 @@ export class OrdersCreateDto {
 
   @ApiProperty()
   @IsNumber()
-  id_user_client: number;
+  id_client: number;
 
   @ApiProperty()
   @IsNumber()
-  amount: number;
+  amount_crypto: number;
 
   @ApiProperty()
   @IsNumber()
-  payment_method: number;
+  amount_fiat: number;
+
+  @ApiProperty()
+  @IsNumber()
+  id_payment_method: number;
 }

@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/sequelize';
 import { OrdersModel } from './orders.model';
 import { OrdersCreateDto } from './dto/orders.dto';
 import { AdvertsService } from 'src/adverts/adverts.service';
+import { OrderStatuses, OrderStatusesType } from './constants/order-statuses';
 
 @Injectable()
 export class OrdersService {
@@ -27,16 +28,13 @@ export class OrdersService {
     }
 
     return await this.ordersRepository.create({
-      id_advert: dto.id_advert,
-      id_user_advert: advert.id_user_advert,
-      id_user_client: dto.id_user_client,
-      crypto_from: advert.crypto_from,
-      crypto_to: advert.crypto_to,
+      ...dto,
+      id_owner: advert.id_owner,
+      id_crypto: advert.id_crypto,
+      id_fiat: advert.id_fiat,
       price: advert.price,
-      amount: dto.amount,
       status: 0,
-      advert_type: advert.advert_type,
-      payment_method: 0,
+      id_advert_type: advert.id_advert_type,
     });
   }
 
@@ -52,18 +50,18 @@ export class OrdersService {
     });
   }
 
-  async findByClientUser(id_user_client: number): Promise<OrdersModel[]> {
+  async findByClient(id_client: number): Promise<OrdersModel[]> {
     return await this.ordersRepository.findAll<OrdersModel>({
       where: {
-        id_user_client,
+        id_client,
       },
     });
   }
 
-  async findByAdvertUser(id_user_advert: number): Promise<OrdersModel[]> {
+  async findByOwner(id_owner: number): Promise<OrdersModel[]> {
     return await this.ordersRepository.findAll<OrdersModel>({
       where: {
-        id_user_advert,
+        id_owner,
       },
     });
   }
@@ -96,21 +94,40 @@ export class OrdersService {
     return await this.setStatus(id, 1);
   }
 
-  async setStatusAdvertPaid(id: number): Promise<OrdersModel> {
+  async setStatusRejected(id: number): Promise<OrdersModel> {
     return await this.setStatus(id, 2);
   }
 
-  async setStatusClientPaid(id: number): Promise<OrdersModel> {
+  async setStatusOwnerPaid(id: number): Promise<OrdersModel> {
     return await this.setStatus(id, 3);
   }
 
-  async setStatusClose(id: number): Promise<OrdersModel> {
+  async setStatusApprovedOwnerPaid(id: number): Promise<OrdersModel> {
     return await this.setStatus(id, 4);
   }
 
-  //TODO Поки тестова ф-ція яка повертає лейбли статусів, треба буде переробити на таблицю
-  async getStatatuses(): Promise<string[]> {
-    return ['Created', 'Approved', 'Advert Paid', 'Client Paid', 'Closed'];
+  async setStatusRejectedOwnerPaid(id: number): Promise<OrdersModel> {
+    return await this.setStatus(id, 5);
+  }
+
+  async setStatusClientPaid(id: number): Promise<OrdersModel> {
+    return await this.setStatus(id, 6);
+  }
+
+  async setStatusApprovedClientPaid(id: number): Promise<OrdersModel> {
+    return await this.setStatus(id, 7);
+  }
+
+  async setStatusRejectedClientPaid(id: number): Promise<OrdersModel> {
+    return await this.setStatus(id, 8);
+  }
+
+  async setStatusClose(id: number): Promise<OrdersModel> {
+    return await this.setStatus(id, 9);
+  }
+
+  async getStatatuses(): Promise<OrderStatusesType[]> {
+    return OrderStatuses;
   }
 
   //TODO обов'язково видалити після тестів

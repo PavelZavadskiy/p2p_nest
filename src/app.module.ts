@@ -4,6 +4,9 @@ import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import { AdvertsModule } from './adverts/adverts.module';
 import { OrdersModule } from './orders/orders.module';
+import { TestModule } from './test/test.module';
+
+import { SocketModule } from './socket/socket.module';
 
 @Module({
   imports: [
@@ -12,6 +15,10 @@ import { OrdersModule } from './orders/orders.module';
     }),
     AdvertsModule,
     OrdersModule,
+
+    //TODO For tests
+    TestModule,
+    SocketModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { DataTypes } from 'sequelize';
 import { Column, DataType, Model, Table } from 'sequelize-typescript';
 
 // enum AdvertType {
@@ -6,7 +7,7 @@ import { Column, DataType, Model, Table } from 'sequelize-typescript';
 //   Selling = 'Selling',
 // }
 
-@Table({ tableName: 'adverts' })
+@Table({ tableName: 'ads' })
 export class AdvertsModel extends Model {
   @ApiProperty()
   @Column({
@@ -21,25 +22,32 @@ export class AdvertsModel extends Model {
   @Column({
     type: DataType.INTEGER,
   })
-  id_user_advert: number;
+  id_owner: number;
 
   @ApiProperty()
   @Column({
     type: DataType.INTEGER,
   })
-  advert_type: number;
+  id_advert_type: number;
 
   @ApiProperty()
   @Column({
     type: DataType.INTEGER,
   })
-  crypto_from: number;
+  id_crypto: number;
 
   @ApiProperty()
   @Column({
     type: DataType.INTEGER,
   })
-  crypto_to: number;
+  id_fiat: number;
+
+  //0-Fixed 1-Floating
+  @ApiProperty()
+  @Column({
+    type: DataType.INTEGER,
+  })
+  priceType: number;
 
   @ApiProperty()
   @Column({
@@ -49,9 +57,21 @@ export class AdvertsModel extends Model {
 
   @ApiProperty()
   @Column({
+    type: DataType.INTEGER,
+  })
+  pricePercent: number;
+
+  @ApiProperty()
+  @Column({
     type: DataType.DECIMAL(24, 8),
   })
-  limit: number;
+  limitMin: number;
+
+  @ApiProperty()
+  @Column({
+    type: DataType.DECIMAL(24, 8),
+  })
+  limitMax: number;
 
   @ApiProperty()
   @Column({
@@ -65,15 +85,22 @@ export class AdvertsModel extends Model {
   })
   commision: number;
 
+  // SQL не зберігає масиви тому будемо зберігати як string з сепаратором '-'
   @ApiProperty()
   @Column({
-    type: DataType.INTEGER,
+    type: DataTypes.STRING,
   })
-  payment_method: number; //TODO Тут скоріше треба передавати массив можливих оплат
+  id_payment_methods: string;
 
   @ApiProperty()
   @Column({
     type: DataType.INTEGER,
   })
-  region: number;
+  id_region: number;
+
+  @ApiProperty()
+  @Column({
+    type: DataType.BOOLEAN,
+  })
+  is_active: boolean;
 }

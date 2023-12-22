@@ -22,25 +22,25 @@ export class OrdersModel extends Model {
   @Column({
     type: DataType.INTEGER,
   })
-  id_user_advert: number;
+  id_owner: number;
 
   @ApiProperty()
   @Column({
     type: DataType.INTEGER,
   })
-  id_user_client: number;
+  id_client: number;
 
   @ApiProperty()
   @Column({
     type: DataType.INTEGER,
   })
-  crypto_from: number;
+  id_crypto: number;
 
   @ApiProperty()
   @Column({
     type: DataType.INTEGER,
   })
-  crypto_to: number;
+  id_fiat: number;
 
   @ApiProperty()
   @Column({
@@ -52,7 +52,13 @@ export class OrdersModel extends Model {
   @Column({
     type: DataType.DECIMAL(24, 8),
   })
-  amount: number;
+  amount_crypto: number;
+
+  @ApiProperty()
+  @Column({
+    type: DataType.DECIMAL(24, 8),
+  })
+  amount_fiat: number;
 
   @ApiProperty()
   @Column({
@@ -64,11 +70,11 @@ export class OrdersModel extends Model {
   @Column({
     type: DataType.INTEGER,
   })
-  advert_type: number;
+  id_advert_type: number;
 
   @ApiProperty()
   @Column({
     type: DataType.INTEGER,
   })
-  payment_method: number;
+  id_payment_method: number;
 }

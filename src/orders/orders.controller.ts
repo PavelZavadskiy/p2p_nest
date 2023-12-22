@@ -57,7 +57,7 @@ export class OrdersController {
     return result;
   }
 
-  @ApiOperation({ summary: 'Set status approved' })
+  @ApiOperation({ summary: 'Set status Approved' })
   @ApiResponse({
     status: 200,
     type: OrdersModel,
@@ -73,32 +73,112 @@ export class OrdersController {
     return result;
   }
 
-  @ApiOperation({ summary: 'Set status advert-paid' })
+  @ApiOperation({ summary: 'Set status Rejected' })
   @ApiResponse({
     status: 200,
     type: OrdersModel,
   })
   @UsePipes(new ValidationPipe())
-  @Post('status-advert-paid/:id')
+  @Post('status-rejected/:id')
   @HttpCode(200)
-  async setStatusAdvertPaid(@Param('id') id: number) {
-    const result = await this.ordersService.setStatusAdvertPaid(id);
+  async setStatusRejected(@Param('id') id: number) {
+    const result = await this.ordersService.setStatusRejected(id);
     if (!result) {
       throw new HttpException('Status update error', HttpStatus.NOT_FOUND);
     }
     return result;
   }
 
-  @ApiOperation({ summary: 'Set status client_paid' })
+  @ApiOperation({ summary: 'Set status Owner Paid' })
   @ApiResponse({
     status: 200,
     type: OrdersModel,
   })
   @UsePipes(new ValidationPipe())
-  @Post('status-client_paid/:id')
+  @Post('status-owner-paid/:id')
+  @HttpCode(200)
+  async setStatusOwnerPaid(@Param('id') id: number) {
+    const result = await this.ordersService.setStatusOwnerPaid(id);
+    if (!result) {
+      throw new HttpException('Status update error', HttpStatus.NOT_FOUND);
+    }
+    return result;
+  }
+
+  @ApiOperation({ summary: 'Set status Approved Owner Paid' })
+  @ApiResponse({
+    status: 200,
+    type: OrdersModel,
+  })
+  @UsePipes(new ValidationPipe())
+  @Post('status-approved-owner-paid/:id')
+  @HttpCode(200)
+  async setStatusApprovedOwnerPaid(@Param('id') id: number) {
+    const result = await this.ordersService.setStatusApprovedOwnerPaid(id);
+    if (!result) {
+      throw new HttpException('Status update error', HttpStatus.NOT_FOUND);
+    }
+    return result;
+  }
+
+  @ApiOperation({ summary: 'Set status Rejected Owner Paid' })
+  @ApiResponse({
+    status: 200,
+    type: OrdersModel,
+  })
+  @UsePipes(new ValidationPipe())
+  @Post('status-rejected-owner-paid/:id')
+  @HttpCode(200)
+  async setStatusRejectedOwnerPaid(@Param('id') id: number) {
+    const result = await this.ordersService.setStatusRejectedOwnerPaid(id);
+    if (!result) {
+      throw new HttpException('Status update error', HttpStatus.NOT_FOUND);
+    }
+    return result;
+  }
+
+  @ApiOperation({ summary: 'Set status Client Paid' })
+  @ApiResponse({
+    status: 200,
+    type: OrdersModel,
+  })
+  @UsePipes(new ValidationPipe())
+  @Post('status-client-paid/:id')
   @HttpCode(200)
   async setStatusClientPaid(@Param('id') id: number) {
     const result = await this.ordersService.setStatusClientPaid(id);
+    if (!result) {
+      throw new HttpException('Status update error', HttpStatus.NOT_FOUND);
+    }
+    return result;
+  }
+
+  @ApiOperation({ summary: 'Set status Approved Client Paid' })
+  @ApiResponse({
+    status: 200,
+    type: OrdersModel,
+  })
+  @UsePipes(new ValidationPipe())
+  @Post('status-approved-client-paid/:id')
+  @HttpCode(200)
+  async setStatusApprovedClientPaid(@Param('id') id: number) {
+    const result = await this.ordersService.setStatusApprovedClientPaid(id);
+    if (!result) {
+      throw new HttpException('Status update error', HttpStatus.NOT_FOUND);
+    }
+    return result;
+  }
+
+  @ApiOperation({ summary: 'Set status Approved Client Paid' })
+  @ApiResponse({
+    status: 200,
+    type: OrdersModel,
+  })
+  @UsePipes(new ValidationPipe())
+  @Post('status-rejected-client-paid/:id')
+  @HttpCode(200)
+  async setStatusRejectedClientPaid(@Param('id') id: number) {
+    const result = await this.ordersService.setStatusRejectedClientPaid(id);
     if (!result) {
       throw new HttpException('Status update error', HttpStatus.NOT_FOUND);
     }
@@ -124,7 +204,6 @@ export class OrdersController {
   @ApiOperation({ summary: 'Get statuses' })
   @ApiResponse({
     status: 200,
-    type: [String],
   })
   @Get('/statuses/all')
   async getStatatuses() {

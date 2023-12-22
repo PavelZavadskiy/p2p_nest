@@ -4,19 +4,23 @@ import { IsNumber } from 'class-validator';
 export class AdvertsCreateDto {
   @ApiProperty()
   @IsNumber()
-  id_user_advert: number;
+  id_owner: number;
 
   @ApiProperty()
   @IsNumber()
-  advert_type: number;
+  id_advert_type: number;
 
   @ApiProperty()
   @IsNumber()
-  crypto_from: number;
+  id_crypto: number;
 
   @ApiProperty()
   @IsNumber()
-  crypto_to: number;
+  id_fiat: number;
+
+  @ApiProperty()
+  @IsNumber()
+  priceType: number;
 
   @ApiProperty()
   @IsNumber()
@@ -24,7 +28,15 @@ export class AdvertsCreateDto {
 
   @ApiProperty()
   @IsNumber()
-  limit: number;
+  pricePercent: number;
+
+  @ApiProperty()
+  @IsNumber()
+  limitMin: number;
+
+  @ApiProperty()
+  @IsNumber()
+  limitMax: number;
 
   @ApiProperty()
   @IsNumber()
@@ -32,9 +44,70 @@ export class AdvertsCreateDto {
 
   @ApiProperty()
   @IsNumber()
-  payment_method: number;
+  commision: number;
+
+  @ApiProperty()
+  @IsNumber({}, { each: true })
+  id_payment_methods: number[];
 
   @ApiProperty()
   @IsNumber()
-  region: number;
+  id_region: number;
+}
+
+export class AdvertsDto {
+  @ApiProperty()
+  id: number;
+
+  @ApiProperty()
+  id_owner: number;
+
+  @ApiProperty()
+  id_advert_type: number;
+
+  @ApiProperty()
+  id_crypto: number;
+
+  @ApiProperty()
+  id_fiat: number;
+
+  @ApiProperty()
+  @IsNumber()
+  priceType: number;
+
+  @ApiProperty()
+  price: number;
+
+  @ApiProperty()
+  @IsNumber()
+  pricePercent: number;
+
+  @ApiProperty()
+  @IsNumber()
+  limitMin: number;
+
+  @ApiProperty()
+  @IsNumber()
+  limitMax: number;
+
+  @ApiProperty()
+  available: number;
+
+  @ApiProperty()
+  commision: number;
+
+  @ApiProperty()
+  id_payment_methods: number[];
+
+  @ApiProperty()
+  id_region: number;
+
+  @ApiProperty()
+  is_active: boolean;
+
+  // @ApiProperty()
+  // createdAt: string;
+
+  // @ApiProperty()
+  // updatedAt: string;
 }
